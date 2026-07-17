@@ -2,12 +2,31 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'build'
-      - '-t'
-      - 'gcr.io/qwiklabs-gcp-02-5c4186be5fe4/cloud-build-demo'
-      - '.'
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'build'
+    - '-t'
+    - 'us-east4-docker.pkg.dev/qwiklabs-gcp-01-afd9e11e8651/cloud-build-demo/cloud-build-demo:$SHORT_SHA'
+    - '.'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'push'
+    - 'us-east4-docker.pkg.dev/qwiklabs-gcp-01-afd9e11e8651/cloud-build-demo/cloud-build-demo:$SHORT_SHA'
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+    - 'run'
+    - 'deploy'
+    - 'cloud-build-demo'
+    - '--image'
+    - 'us-east4-docker.pkg.dev/qwiklabs-gcp-01-afd9e11e8651/cloud-build-demo/cloud-build-demo:$SHORT_SHA'
+    - '--region'
+    - 'us-east4'
+    - '--platform'
+    - 'managed'
+    - '--allow-unauthenticated'
 
 images:
-  - 'gcr.io/qwiklabs-gcp-02-5c4186be5fe4/cloud-build-demo'
+- 'us-east4-docker.pkg.dev/qwiklabs-gcp-01-afd9e11e8651/cloud-build-demo/cloud-build-demo:$SHORT_SHA'
