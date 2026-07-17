@@ -1,0 +1,10 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/qwiklabs-gcp-02-5c4186be5fe4/cloud-build-demo'
+      - '.'
+
+images:
+  - 'gcr.io/qwiklabs-gcp-02-5c4186be5fe4/cloud-build-demo'
